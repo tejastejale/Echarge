@@ -12,7 +12,6 @@ export default function Login() {
 
   useEffect(() => {
     if (timeLeft === 0) return;
-
     const timerId = setInterval(() => {
       setTimeLeft(prevTime => prevTime - 1);
     }, 1000);
@@ -108,12 +107,16 @@ export default function Login() {
                 Resend in {timeLeft} seconds
               </Text>
             ) : (
-              <Button text={'Resend'} classname={'mt-6 mb-6'} />
+              <Button text={'Resend'} classname={'mt-6'} />
               // <TouchableOpacity className="bg-lime-500 py-3 mt-6 rounded-xl w-full">
               //   <Text className="text-white text-center font-bold">Resend</Text>
               // </TouchableOpacity>
             )}
-            <Button onPress={handleContinue} text={'Continue'} />
+            <Button
+              onPress={handleContinue}
+              text={'Continue'}
+              classname={'mt-6'}
+            />
             {/* <TouchableOpacity
               onPress={handleContinue}
               className="bg-lime-500 py-3 mt-6 rounded-xl w-full">
