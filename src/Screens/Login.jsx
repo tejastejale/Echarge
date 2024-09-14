@@ -2,9 +2,10 @@ import {View, Text, Image, TouchableOpacity, TextInput} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {images} from '../../Assets/Assets';
 import OTPTextView from 'react-native-otp-textinput';
-import Button from './Components/Button';
-export default function Login() {
-  const [screen, setScreen] = useState(false);
+import Button from '../Components/Button';
+import {useNavigation} from '@react-navigation/native';
+export default function Login({navigation}) {
+  const [screen, setScreen] = useState(true);
   const [cbutton, setCButton] = useState(true);
   const [timeLeft, setTimeLeft] = useState(30);
   const [number, setNumber] = useState('');
@@ -35,6 +36,7 @@ export default function Login() {
 
   const handleContinue = () => {
     console.log(otp);
+    navigation.navigate('Home');
   };
 
   const handleOTP = e => {
@@ -43,8 +45,8 @@ export default function Login() {
 
   const handleClick = () => {
     setScreen(!screen);
-    setCButton(true); // Reset the continue button visibility
-    setTimeLeft(30); // Reset the timer
+    setCButton(true);
+    setTimeLeft(30);
   };
 
   return (
@@ -70,6 +72,7 @@ export default function Login() {
 
               <TextInput
                 onChangeText={e => setNumber(e)}
+                value={number}
                 placeholder="Phone"
                 keyboardType="numeric"
                 maxLength={10}
