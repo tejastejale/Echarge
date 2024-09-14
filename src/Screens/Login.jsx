@@ -1,26 +1,25 @@
 import {View, Text, Image, TouchableOpacity, TextInput} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {images} from '../Assets/Assets';
+import {images} from '../../Assets/Assets';
 import OTPTextView from 'react-native-otp-textinput';
-import 'nativewind';
-
+import Button from './Components/Button';
 export default function Login() {
-  const [screen, setScreen] = useState(false); // Controls screen view between login and OTP screen
-  const [cbutton, setCButton] = useState(true); // Controls visibility of the Continue button
-  const [timeLeft, setTimeLeft] = useState(30); // Timer for OTP countdown
+  const [screen, setScreen] = useState(false);
+  const [cbutton, setCButton] = useState(true);
+  const [timeLeft, setTimeLeft] = useState(30);
+  const [number, setNumber] = useState('');
+  const [otp, setOtp] = useState('');
 
-  // Countdown timer logic
   useEffect(() => {
-    if (timeLeft === 0) return; // Stop countdown when it reaches 0
+    if (timeLeft === 0) return;
 
     const timerId = setInterval(() => {
       setTimeLeft(prevTime => prevTime - 1);
     }, 1000);
 
-    return () => clearInterval(timerId); // Cleanup on unmount
+    return () => clearInterval(timerId);
   }, [screen, timeLeft]);
 
-  // Disable "Continue" button after 30 seconds
   useEffect(() => {
     if (screen) {
       setTimeout(() => {
@@ -28,6 +27,20 @@ export default function Login() {
       }, 30000);
     }
   }, [screen]);
+
+  const handleNumber = () => {
+    if (number.length == 10) {
+      handleClick();
+    }
+  };
+
+  const handleContinue = () => {
+    console.log(otp);
+  };
+
+  const handleOTP = e => {
+    setOtp(e);
+  };
 
   const handleClick = () => {
     setScreen(!screen);
@@ -37,7 +50,6 @@ export default function Login() {
 
   return (
     <View className="flex-1 bg-white">
-      {/* Header with Image */}
       <View className="h-1/4 bg-black">
         <Image
           source={images.petrolpump}
@@ -45,13 +57,11 @@ export default function Login() {
         />
       </View>
 
-      {/* Conditional rendering: Login Screen or OTP Screen */}
       {screen ? (
         <View className="flex-1 -mt-2 p-5 bg-white rounded-t-xl">
           <Text className="text-2xl font-bold tracking-widest">Login</Text>
           <View className="flex items-center justify-start py-10 space-y-5 w-full">
             <View className="flex-row w-full items-center">
-              {/* Country Code Section */}
               <TouchableOpacity
                 className="flex-row h-full 
               items-center space-x-1 px-2 border border-r-0 rounded-l-lg">
@@ -59,8 +69,8 @@ export default function Login() {
                 <Text className="font-semibold">+91</Text>
               </TouchableOpacity>
 
-              {/* Phone Number Input */}
               <TextInput
+                onChangeText={e => setNumber(e)}
                 placeholder="Phone"
                 keyboardType="numeric"
                 maxLength={10}
@@ -68,13 +78,7 @@ export default function Login() {
               />
             </View>
             <View className="w-full space-y-4">
-              <TouchableOpacity
-                onPress={handleClick}
-                className="bg-lime-500 py-3 rounded-xl w-full">
-                <Text className="text-white text-center font-bold">
-                  Send OTP
-                </Text>
-              </TouchableOpacity>
+              <Button text={'Send OTP'} onPress={handleNumber} />
 
               <Text className="text-center">or</Text>
 
@@ -87,7 +91,7 @@ export default function Login() {
         </View>
       ) : (
         <View className="flex-1 -mt-2 p-5 bg-white rounded-t-xl">
-          <TouchableOpacity onPress={handleClick} className="mb-0">
+          <TouchableOpacity onPress={handleClick} className="mb-2">
             <Text className="text-lg text-lime-500">Back</Text>
           </TouchableOpacity>
           <Text className="text-2xl font-bold">OTP Verification</Text>
@@ -96,20 +100,25 @@ export default function Login() {
             <OTPTextView
               inputCount={4}
               caretHidden={true}
-              className="border w-10 h-12 text-center mt-5 rounded-lg"
+              handleTextChange={handleOTP}
+              className="border w-12 h-12 text-center mt-5 rounded-lg"
             />
             {cbutton ? (
               <Text className="text-md mt-4 text-center">
                 Resend in {timeLeft} seconds
               </Text>
             ) : (
-              <TouchableOpacity className="bg-lime-500 py-3 mt-6 rounded-xl w-full">
-                <Text className="text-white text-center font-bold">Resend</Text>
-              </TouchableOpacity>
+              <Button text={'Resend'} classname={'mt-6 mb-6'} />
+              // <TouchableOpacity className="bg-lime-500 py-3 mt-6 rounded-xl w-full">
+              //   <Text className="text-white text-center font-bold">Resend</Text>
+              // </TouchableOpacity>
             )}
-            <TouchableOpacity className="bg-lime-500 py-3 mt-6 rounded-xl w-full">
+            <Button onPress={handleContinue} text={'Continue'} />
+            {/* <TouchableOpacity
+              onPress={handleContinue}
+              className="bg-lime-500 py-3 mt-6 rounded-xl w-full">
               <Text className="text-white text-center font-bold">Continue</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
       )}
