@@ -1,9 +1,9 @@
 import {View, Text, Image, TouchableOpacity, TextInput} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {images} from '../../Assets/Assets';
+import {images} from '../Assets/Assets';
 import OTPTextView from 'react-native-otp-textinput';
 import Button from '../Components/Button';
-import {useNavigation} from '@react-navigation/native';
+
 export default function Login({navigation}) {
   const [screen, setScreen] = useState(true);
   const [cbutton, setCButton] = useState(true);
